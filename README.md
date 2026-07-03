@@ -31,7 +31,7 @@ data se ukládají jen v tvém prohlížeči (nikdo jiný je nevidí). Slouží 
 > Klíč **service_role** je tajný a nikdy nesmí do kódu.
 
 ### 2) Mapa
-Nahraď `assets/map.png` vlastním plánkem tábora (stejný název souboru).
+Nahraď `assets/map.jpg` vlastním plánkem tábora (stejný název souboru).
 Souřadnice parkovišť se ukládají relativně, takže sedí na jakýkoliv obrázek.
 
 ### 3) Nasazení zdarma na GitHub Pages
@@ -93,6 +93,6 @@ Počítá se ze součtu volných míst na parkovištích označených **„u spo
 | `config.js` | Přístup k Supabase (URL + anon klíč) + volitelný `EDITOR_PIN` |
 | `supabase-setup.sql` | Vytvoření tabulky a práv v Supabase |
 | `supabase-reset.sql` | Čistý reset tabulky (při konfliktu z dřívějška) |
-| `assets/map.png` | Plánek tábora |
+| `assets/map.jpg` | Plánek tábora |
 | `robots.txt` | Zákaz indexace vyhledávači |
 | `.github/workflows/deploy.yml` | Automatické nasazení na GitHub Pages |
