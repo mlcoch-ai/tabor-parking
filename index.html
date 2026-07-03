@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#2e7d32" />
+  <title>Parkování — tábor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🅿️</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="title-row">
+      <h1>🅿️ Parkování — tábor</h1>
+      <div class="header-actions">
+        <span id="connStatus" class="conn-badge" title="Stav připojení">…</span>
+        <button id="editToggle" class="btn btn-ghost" title="Režim úprav parkovišť">✏️ Upravit</button>
+      </div>
+    </div>
+    <div id="banner" class="banner banner-neutral">Načítám…</div>
+  </header>
+
+  <main>
+    <div id="mapWrap" class="map-wrap">
+      <img id="mapImg" src="assets/map.png" alt="Mapa tábora" draggable="false" />
+      <div id="overlay" class="overlay"></div>
+      <div id="drawHint" class="draw-hint hidden">Táhnutím na mapě nakresli obdélník nového parkoviště</div>
+    </div>
+
+    <section id="legend" class="legend">
+      <span><i class="dot dot-free"></i> Volno</span>
+      <span><i class="dot dot-warn"></i> Plní se</span>
+      <span><i class="dot dot-full"></i> Plno</span>
+      <span class="legend-hint">Klikni na parkoviště a zadej počet aut.</span>
+    </section>
+  </main>
+
+  <!-- Modal: zadání počtu aut (režim zobrazení) -->
+  <div id="countModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2 id="countTitle">Parkoviště</h2>
+        <button class="btn btn-ghost close-x" data-close>✕</button>
+      </div>
+
+      <div class="stepper-block">
+        <label>Kolik aut právě stojí</label>
+        <div class="stepper">
+          <button class="btn btn-step" data-step="current" data-delta="-1">−</button>
+          <input id="curInput" class="num-input" type="number" min="0" inputmode="numeric" />
+          <button class="btn btn-step" data-step="current" data-delta="1">+</button>
+        </div>
+      </div>
+
+      <div class="stepper-block">
+        <label>Kapacita (max aut)</label>
+        <div class="stepper">
+          <button class="btn btn-step" data-step="max" data-delta="-1">−</button>
+          <input id="maxInput" class="num-input" type="number" min="0" inputmode="numeric" />
+          <button class="btn btn-step" data-step="max" data-delta="1">+</button>
+        </div>
+        <p class="hint">U dlouhých aut zmenši kapacitu — vejde se jich míň.</p>
+      </div>
+
+      <div id="occPreview" class="occ-preview"></div>
+      <p id="lastUpd" class="last-upd"></p>
+
+      <div class="modal-foot">
+        <button class="btn btn-secondary" data-close>Zrušit</button>
+        <button id="saveCount" class="btn btn-primary">Uložit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: editace parkoviště (režim úprav) -->
+  <div id="editModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2>Parkoviště</h2>
+        <button class="btn btn-ghost close-x" data-close-edit>✕</button>
+      </div>
+
+      <label class="field">
+        <span>Název</span>
+        <input id="editName" type="text" maxlength="40" placeholder="Např. U brány" />
+      </label>
+
+      <label class="field">
+        <span>Výchozí kapacita</span>
+        <input id="editMax" type="number" min="0" inputmode="numeric" />
+      </label>
+
+      <label class="field field-check">
+        <input id="editLower" type="checkbox" />
+        <span>Leží u <strong>spodní cesty</strong> (počítá se do doporučení)</span>
+      </label>
+
+      <div class="modal-foot spread">
+        <button id="deleteSpot" class="btn btn-danger">Smazat</button>
+        <div>
+          <button class="btn btn-secondary" data-close-edit>Zrušit</button>
+          <button id="saveEdit" class="btn btn-primary">Uložit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
