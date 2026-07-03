@@ -27,6 +27,10 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # Zapne GitHub Pages se zdrojem "GitHub Actions" automaticky,
+          # pokud ještě nejsou zapnuté (nemusíš nic klikat v Settings).
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
