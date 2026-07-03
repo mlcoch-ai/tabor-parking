@@ -10,4 +10,5 @@
 // Dokud jsou hodnoty prázdné, appka běží v DEMO režimu (data jen v tomto prohlížeči).
 
 export const SUPABASE_URL = "https://zilvgglxokwdewdmlzik.supabase.co";
-export const SUPABASE_ANON_KEY = ""; // <-- sem vlož "anon public" klíč (začíná "eyJ...")
+export const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppbHZnZ2x4b2t3ZGV3ZG1semlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMTg5NDQsImV4cCI6MjA5ODU5NDk0NH0.H0ylRwOW-SAkIbPnQJLoNJttsi82ytVqhXNlKTDNRDM";
