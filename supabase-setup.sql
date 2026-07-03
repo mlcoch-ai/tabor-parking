@@ -35,7 +35,19 @@ create policy "public_insert" on public.parking_spots for insert with check (tru
 create policy "public_update" on public.parking_spots for update using (true) with check (true);
 create policy "public_delete" on public.parking_spots for delete using (true);
 
--- 3) Realtime — aby se změny objevily u všech okamžitě
-alter publication supabase_realtime add table public.parking_spots;
+-- 3) Realtime — aby se změny objevily u všech okamžitě.
+--    Přidáme tabulku do publikace jen pokud tam ještě není
+--    (aby šel skript spustit opakovaně bez chyby 42710).
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename  = 'parking_spots'
+  ) then
+    alter publication supabase_realtime add table public.parking_spots;
+  end if;
+end $$;
 
 -- Hotovo. Parkoviště se přidávají přímo v appce (tlačítko ✏️ Upravit).
