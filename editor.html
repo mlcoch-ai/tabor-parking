@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#1d4ed8" />
+  <title>Editor parkovišť — tábor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="title-row">
+      <h1>🛠️ Editor parkovišť</h1>
+      <div class="header-actions">
+        <span id="connStatus" class="conn-badge" title="Stav připojení">…</span>
+        <a class="btn btn-ghost" href="index.html" title="Zpět na veřejnou appku">👁️ Náhled</a>
+      </div>
+    </div>
+    <div class="editor-toolbar">
+      <button id="saveDb" class="btn btn-primary">💾 Uložit do DB</button>
+      <button id="exportBtn" class="btn btn-secondary">⬇️ Export</button>
+      <button id="importBtn" class="btn btn-secondary">⬆️ Import</button>
+      <button id="reloadBtn" class="btn btn-ghost">🔄 Načíst z DB</button>
+      <span id="dirtyState" class="dirty-state"></span>
+    </div>
+    <input id="importFile" type="file" accept="application/json,.json" class="hidden" />
+  </header>
+
+  <main>
+    <p class="editor-hint">
+      <strong>Táhni</strong> po mapě = nové parkoviště &middot;
+      <strong>klikni</strong> = vybrat &middot;
+      táhni vybrané = přesun &middot;
+      <strong>pravý dolní roh</strong> = velikost
+    </p>
+
+    <div id="mapWrap" class="map-wrap editing">
+      <img id="mapImg" src="assets/map.png" alt="Mapa tábora" draggable="false" />
+      <div id="overlay" class="overlay"></div>
+    </div>
+  </main>
+
+  <!-- Panel vlastností vybraného parkoviště -->
+  <div id="propPanel" class="prop-panel hidden">
+    <div class="prop-head">
+      <strong id="propTitle">Parkoviště</strong>
+      <button id="deselect" class="btn btn-ghost close-x" title="Odznačit">✕</button>
+    </div>
+    <label class="field">
+      <span>Název</span>
+      <input id="pName" type="text" maxlength="40" placeholder="Např. U brány" />
+    </label>
+    <div class="prop-row">
+      <label class="field">
+        <span>Kapacita (max aut)</span>
+        <input id="pMax" type="number" min="0" inputmode="numeric" />
+      </label>
+      <label class="field field-check">
+        <input id="pLower" type="checkbox" />
+        <span>u <strong>spodní cesty</strong></span>
+      </label>
+    </div>
+    <div class="modal-foot spread">
+      <button id="pDelete" class="btn btn-danger">Smazat</button>
+      <button id="pDone" class="btn btn-primary">Hotovo</button>
+    </div>
+  </div>
+
+  <!-- Volitelný PIN zámek -->
+  <div id="pinGate" class="pin-gate hidden">
+    <div class="pin-card">
+      <h2>🔒 Editor je zamčený</h2>
+      <p>Zadej PIN pro přístup do editoru.</p>
+      <input id="pinInput" type="password" inputmode="numeric" placeholder="PIN" />
+      <button id="pinOk" class="btn btn-primary">Odemknout</button>
+      <p id="pinErr" class="pin-err"></p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script type="module" src="editor.js"></script>
+</body>
+</html>

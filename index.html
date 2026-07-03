@@ -15,7 +15,6 @@
       <h1>🅿️ Parkování — tábor</h1>
       <div class="header-actions">
         <span id="connStatus" class="conn-badge" title="Stav připojení">…</span>
-        <button id="editToggle" class="btn btn-ghost" title="Režim úprav parkovišť">✏️ Upravit</button>
       </div>
     </div>
     <div id="banner" class="banner banner-neutral">Načítám…</div>
@@ -25,7 +24,6 @@
     <div id="mapWrap" class="map-wrap">
       <img id="mapImg" src="assets/map.png" alt="Mapa tábora" draggable="false" />
       <div id="overlay" class="overlay"></div>
-      <div id="drawHint" class="draw-hint hidden">Táhnutím na mapě nakresli obdélník nového parkoviště</div>
     </div>
 
     <section id="legend" class="legend">
@@ -69,39 +67,6 @@
       <div class="modal-foot">
         <button class="btn btn-secondary" data-close>Zrušit</button>
         <button id="saveCount" class="btn btn-primary">Uložit</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: editace parkoviště (režim úprav) -->
-  <div id="editModal" class="modal hidden" role="dialog" aria-modal="true">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h2>Parkoviště</h2>
-        <button class="btn btn-ghost close-x" data-close-edit>✕</button>
-      </div>
-
-      <label class="field">
-        <span>Název</span>
-        <input id="editName" type="text" maxlength="40" placeholder="Např. U brány" />
-      </label>
-
-      <label class="field">
-        <span>Výchozí kapacita</span>
-        <input id="editMax" type="number" min="0" inputmode="numeric" />
-      </label>
-
-      <label class="field field-check">
-        <input id="editLower" type="checkbox" />
-        <span>Leží u <strong>spodní cesty</strong> (počítá se do doporučení)</span>
-      </label>
-
-      <div class="modal-foot spread">
-        <button id="deleteSpot" class="btn btn-danger">Smazat</button>
-        <div>
-          <button class="btn btn-secondary" data-close-edit>Zrušit</button>
-          <button id="saveEdit" class="btn btn-primary">Uložit</button>
-        </div>
       </div>
     </div>
   </div>

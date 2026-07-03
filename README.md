@@ -41,15 +41,35 @@ Po pushi na větev `claude/camp-parking-app-mz4yq2` se web sám nasadí
 
 ---
 
-## Jak se používá
+## Dvě části aplikace
+
+| Stránka | K čemu | Kdo |
+|---|---|---|
+| `index.html` | **Veřejná appka** — prohlížení obsazenosti + zadání počtu aut | všichni |
+| `editor.html` | **Editor parkovišť** — kreslení a správa parkovišť | jen ty (správce) |
+
+Editor **není** odkazovaný z veřejné appky. Otevřeš ho ručně na `.../editor.html`.
+
+## Veřejná appka (`index.html`)
 
 - **Zadat počet aut:** klikni na parkoviště → nastav „kolik stojí" a „kapacitu" → *Uložit*.
   Kapacitu zmenši, když jsou na parkovišti dlouhá auta.
-- **Přidat/upravit parkoviště:** tlačítko **✏️ Upravit** →
-  - táhnutím po mapě nakresli nový obdélník,
-  - klikem na existující ho přejmenuješ, změníš kapacitu, označíš „u spodní cesty" nebo smažeš.
-  - Zaškrtnutí **„u spodní cesty"** zahrne parkoviště do doporučení nahoře.
-- Až budeš hotov, klikni **✅ Hotovo**.
+- Nahoře je barevné doporučení, kterou cestou jet.
+- Nedají se tu přidávat ani mazat parkoviště — to je jen v editoru.
+
+## Editor parkovišť (`editor.html`)
+
+Samostatný nástroj pro správce. Otevři `.../editor.html`.
+
+- **Nové parkoviště:** táhni obdélník po mapě.
+- **Vybrat:** klikni na parkoviště (odroluje se nad panel a otevře jeho vlastnosti).
+- **Přesun:** táhni už vybrané parkoviště. **Velikost:** táhni jeho pravý dolní roh.
+- **Vlastnosti:** název, kapacita, přepínač **„u spodní cesty"** (zahrne ho do doporučení), *Smazat*.
+- **💾 Uložit do DB** — uloží rozvržení do Supabase (živě se projeví ve veřejné appce).
+  Ukládá jen geometrii/název/kapacitu — **nepřepíše aktuální počty aut**.
+- **⬇️ Export / ⬆️ Import** — zálohuj/obnov rozvržení jako soubor `parkoviste.json`.
+- **Volitelný PIN:** nastav `EDITOR_PIN` v `config.js` a editor se před otevřením zeptá na PIN
+  (jen lehká překážka, ne skutečné zabezpečení).
 
 ## Doporučení cesty (banner nahoře)
 
@@ -67,11 +87,12 @@ Počítá se ze součtu volných míst na parkovištích označených **„u spo
 
 | Soubor | Popis |
 |---|---|
-| `index.html` | Struktura stránky |
-| `styles.css` | Vzhled (mobil-first) |
-| `app.js` | Logika, kreslení, napojení na Supabase |
-| `config.js` | Přístup k Supabase (vyplň URL + anon klíč) |
+| `index.html` + `app.js` | Veřejná appka (prohlížení + zadání počtu aut) |
+| `editor.html` + `editor.js` | Editor parkovišť (jen pro správce) |
+| `styles.css` | Vzhled (mobil-first) — sdílený |
+| `config.js` | Přístup k Supabase (URL + anon klíč) + volitelný `EDITOR_PIN` |
 | `supabase-setup.sql` | Vytvoření tabulky a práv v Supabase |
+| `supabase-reset.sql` | Čistý reset tabulky (při konfliktu z dřívějška) |
 | `assets/map.png` | Plánek tábora |
 | `robots.txt` | Zákaz indexace vyhledávači |
 | `.github/workflows/deploy.yml` | Automatické nasazení na GitHub Pages |

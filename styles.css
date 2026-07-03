@@ -268,6 +268,105 @@ main { padding: 12px; max-width: 1100px; margin: 0 auto; }
 .modal-foot.spread { justify-content: space-between; align-items: center; }
 .modal-foot.spread > div { display: flex; gap: 10px; }
 
+/* ---------- Editor ---------- */
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.editor-toolbar .btn { padding: 8px 12px; }
+.dirty-state { font-size: 0.8rem; margin-left: auto; color: var(--muted); }
+.dirty-state.dirty { color: #b45309; font-weight: 700; }
+.dirty-state.clean { color: var(--green-d); }
+
+.editor-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: #eef2f7;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+/* Úchyt pro změnu velikosti (pravý dolní roh vybraného parkoviště) */
+.spot .handle {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 22px;
+  height: 22px;
+  background: #1d4ed8;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: nwse-resize;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Panel vlastností */
+.prop-panel {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.14);
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  z-index: 30;
+  max-width: 520px;
+  margin: 0 auto;
+}
+@media (min-width: 560px) {
+  .prop-panel { right: 16px; left: auto; bottom: 16px; width: 360px; border-radius: 16px; }
+}
+/* Když je panel otevřený, přidej dole místo, aby šlo odrolovat i nízko
+   položená parkoviště nad panel (a upravit jim velikost). */
+@media (max-width: 559px) {
+  .panel-open main { padding-bottom: 320px; }
+}
+.prop-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.prop-head strong { font-size: 1.05rem; }
+.prop-row { display: flex; gap: 12px; align-items: flex-end; }
+.prop-row .field { flex: 1; }
+.prop-row .field-check { flex: 0 0 auto; padding-bottom: 12px; }
+
+/* PIN zámek */
+.pin-gate {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 80;
+  padding: 20px;
+}
+.pin-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.pin-card h2 { margin: 0 0 6px; }
+.pin-card p { color: var(--muted); margin: 0 0 14px; }
+.pin-card input {
+  width: 100%;
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  letter-spacing: 0.3em;
+}
+.pin-card .btn { width: 100%; }
+.pin-err { color: var(--red); min-height: 1em; margin: 10px 0 0 !important; }
+
 /* Toast */
 .toast {
   position: fixed;
