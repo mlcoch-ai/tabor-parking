@@ -8,6 +8,9 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./config.js";
 
 const usingSupabase = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 let supabase = null;
+// Zapne se až po úspěšném připojení k Supabase. Když se připojení nepovede,
+// zůstane false a appka bezpečně jede v lokálním režimu (zápisy se neztratí).
+let remoteOk = false;
 
 const LS_KEY = "tabor_parking_spots_v1";
 
@@ -98,8 +101,9 @@ async function loadFromSupabase() {
     .select("*")
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
-  if (error) { setConn("err", "Chyba dat"); console.error(error); return; }
+  if (error) { setConn("err", "Chyba dat"); console.error(error); return false; }
   spots = data || [];
+  return true;
 }
 
 function applyPatch(id, patch) {
@@ -108,7 +112,7 @@ function applyPatch(id, patch) {
 }
 
 async function opCreate(spot) {
-  if (usingSupabase) {
+  if (remoteOk) {
     const { data, error } = await supabase.from("parking_spots").insert(spot).select().single();
     if (error) { toast("Chyba uložení"); console.error(error); return null; }
     await loadFromSupabase();
@@ -125,7 +129,7 @@ async function opCreate(spot) {
 async function opUpdate(id, patch) {
   applyPatch(id, patch); // optimistické zobrazení
   render();
-  if (usingSupabase) {
+  if (remoteOk) {
     const { error } = await supabase.from("parking_spots").update(patch).eq("id", id);
     if (error) { toast("Chyba uložení"); console.error(error); }
   } else {
@@ -136,7 +140,7 @@ async function opUpdate(id, patch) {
 async function opRemove(id) {
   spots = spots.filter((s) => s.id !== id);
   render();
-  if (usingSupabase) {
+  if (remoteOk) {
     const { error } = await supabase.from("parking_spots").delete().eq("id", id);
     if (error) { toast("Chyba mazání"); console.error(error); }
   } else {
@@ -366,7 +370,9 @@ async function init() {
     try {
       const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
       supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      await loadFromSupabase();
+      const ok = await loadFromSupabase();
+      if (!ok) throw new Error("Nepodařilo se načíst data ze Supabase (existuje tabulka?)");
+      remoteOk = true;
       supabase
         .channel("parking-realtime")
         .on("postgres_changes", { event: "*", schema: "public", table: "parking_spots" }, async () => {
@@ -379,8 +385,9 @@ async function init() {
         });
       setConn("ok", "Připojeno");
     } catch (err) {
-      console.error("Supabase se nepodařilo načíst, přepínám na demo:", err);
-      setConn("err", "Chyba připojení");
+      console.error("Supabase se nepodařilo načíst, přepínám na lokální režim:", err);
+      remoteOk = false;
+      setConn("err", "Bez spojení (lokálně)");
       loadLocal();
     }
   } else {
